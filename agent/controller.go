@@ -56,17 +56,15 @@ func (c *controller) setAction(move Move) error {
 		return err
 	}
 
-	obj := client.Object{
-		Key: client.Key{
-			Type:      typeAction,
-			Namespace: namespace,
-			Name:      name,
-		},
-		Value: string(val),
+	value := string(val)
+	key := client.Key{
+		Type:      typeAction,
+		Namespace: namespace,
+		Name:      name,
 	}
 
 	for {
-		err = c.Set(obj)
+		err = c.Set(key, value)
 		if err == nil {
 			return nil
 		}
@@ -76,17 +74,14 @@ func (c *controller) setAction(move Move) error {
 }
 
 func (c *controller) setRegister() {
-	obj := client.Object{
-		Key: client.Key{
-			Type:      typeRegister,
-			Namespace: namespace,
-			Name:      name,
-		},
-		Value: "",
+	key := client.Key{
+		Type:      typeRegister,
+		Namespace: namespace,
+		Name:      name,
 	}
 
 	for {
-		err := c.Set(obj)
+		err := c.Set(key, "")
 		if err == nil {
 			break
 		}
